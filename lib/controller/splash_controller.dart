@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../helper/helpers.dart';
 
-class SplashController extends GetxController{
+class SplashController extends GetxController {
   @override
   void onInit() {
     _getUserLogInStatus();
@@ -13,9 +13,10 @@ class SplashController extends GetxController{
 
   _getUserLogInStatus() async {
     await Helpers.getUserStatus().then((value) {
-      if (value != null) {
+      if (value != null && value == true) {
         isSignedIn.value = true;
       }
     });
+
   }
 }

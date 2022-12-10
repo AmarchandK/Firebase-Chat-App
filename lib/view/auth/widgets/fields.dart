@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../../../helper/helpers.dart';
@@ -30,7 +28,7 @@ class FormFields extends StatelessWidget {
           if (value!.isEmpty) {
             return error;
           }
-          return 'Success ';
+          return null;
         },
         decoration: InputDecoration(
           labelStyle: TextStyle(color: primaryColor),

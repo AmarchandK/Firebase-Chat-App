@@ -13,60 +13,62 @@ class LogInPage extends GetView<LogInController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: LogInController.formkeyLogin,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Groupie',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ),
-                h10,
-                const Text(
-                  'LogIn Now to see what we are talking',
-                ),
-                Image.asset('assets/login.png'),
-                FormFields(
-                  hint: 'Email',
-                  error: 'Enter an Email',
-                  controller: controller.emailController,
-                  icon: Icons.email_outlined,
-                  keybord: TextInputType.name,
-                ),
-                FormFields(
-                  hint: 'Password',
-                  error: 'Enter a Password',
-                  controller: controller.passwordController,
-                  icon: Icons.lock,
-                  keybord: TextInputType.number,
-                ),
-                h10,
-                OnTapButton(
-                  buttonName: 'LogIn',
-                  onPressed: () => controller.onLogin(),
-                ),
-                h10,
-                Text.rich(
-                  TextSpan(
-                    text: "Dont't have an account ? ",
-                    children: [
-                      TextSpan(
-                        text: 'Register here',
-                        style: TextStyle(color: primaryColor),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => Get.to(() => const RegisterPage()),
-                      ),
-                    ],
+      body: SafeArea(
+        child: Form(
+          key: LogInController.formkeyLogin,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Groupie',
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
-                ),
-                h20,
-              ],
+                  h10,
+                  const Text(
+                    'LogIn Now to see what we are talking',
+                  ),
+                  Image.asset('assets/login.png'),
+                  FormFields(
+                    hint: 'Email',
+                    error: 'Enter an Email',
+                    controller: controller.emailController,
+                    icon: Icons.email_outlined,
+                    keybord: TextInputType.emailAddress,
+                  ),
+                  FormFields(
+                    hint: 'Password',
+                    error: 'Enter a Password',
+                    controller: controller.passwordController,
+                    icon: Icons.lock,
+                    keybord: TextInputType.number,
+                  ),
+                  h10,
+                  OnTapButton(
+                    buttonName: 'LogIn',
+                    onPressed: () => controller.onLogin(),
+                  ),
+                  h10,
+                  Text.rich(
+                    TextSpan(
+                      text: "Dont't have an account ? ",
+                      children: [
+                        TextSpan(
+                          text: 'Register here',
+                          style: TextStyle(color: primaryColor),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Get.to(() => const RegisterPage()),
+                        ),
+                      ],
+                    ),
+                  ),
+                  h20,
+                ],
+              ),
             ),
           ),
         ),
