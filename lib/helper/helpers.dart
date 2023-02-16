@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Helpers {
-  static String userLogedInKey = 'LOGEDINKEY';
-  static String userNameKey = 'USERNAMEKEY';
-  static String userEmailKey = 'USEREMAILKEY';
+  static const String userLogedInKey = 'LOGEDINKEY';
+  static const String userNameKey = 'USERNAMEKEY';
+  static const String userEmailKey = 'USEREMAILKEY';
   static Future<bool?> getUserStatus() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getBool(userLogedInKey);
@@ -23,7 +23,17 @@ class Helpers {
 
   static Future<bool> saveUserName(String name) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    return await sf.setString(userEmailKey, name);
+    return await sf.setString(userNameKey, name);
+  }
+
+  static Future<String?> getUserEmail() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userEmailKey);
+  }
+
+  static Future<String?> getUserName() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userNameKey);
   }
 }
 

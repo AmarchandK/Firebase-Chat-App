@@ -11,7 +11,7 @@ class SplashScreen extends GetView<SplashController> {
     return Scaffold(
         body: Obx(
       () =>
-          controller.isSignedIn.value ? const HomeScreen() : const LogInPage(),
+          controller.isSignedIn.value ?  HomeScreen() : const LogInPage(),
     ));
   }
 }

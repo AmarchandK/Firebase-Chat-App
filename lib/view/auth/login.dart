@@ -3,6 +3,7 @@ import 'package:chat_firebase/helper/helpers.dart';
 import 'package:chat_firebase/view/auth/signin.dart';
 import 'package:chat_firebase/view/auth/widgets/botton.dart';
 import 'package:chat_firebase/view/auth/widgets/fields.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,10 +49,12 @@ class LogInPage extends GetView<LogInController> {
                     keybord: TextInputType.number,
                   ),
                   h10,
-                  OnTapButton(
-                    buttonName: 'LogIn',
-                    onPressed: () => controller.onLogin(),
-                  ),
+                  Obx(() => controller.isLoading.value
+                      ? const CupertinoActivityIndicator()
+                      : OnTapButton(
+                          buttonName: 'LogIn',
+                          onPressed: () => controller.onLogin(),
+                        )),
                   h10,
                   Text.rich(
                     TextSpan(

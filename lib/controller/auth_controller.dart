@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:chat_firebase/helper/helpers.dart';
 import 'package:chat_firebase/services/auth_service.dart';
 import 'package:chat_firebase/services/data_service.dart';
+import 'package:chat_firebase/view/auth/login.dart';
 import 'package:chat_firebase/view/home/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,17 +18,25 @@ class LogInController extends GetxController {
   RxBool isLoading = false.obs;
 
   onLogin() async {
+    isLoading.value = true;
     final bool? value = await AuthService.logInUser(
-        emailController.text.trim(), passwordController.text.trim());
-    if (value == true) {
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
+    if (value == true && value != null) {
       QuerySnapshot snapshot =
           await DataBaseService(uid: FirebaseAuth.instance.currentUser!.uid)
               .getuserData(emailController.text.trim());
       await Helpers.saveUserLoggedInStatus(true);
       await Helpers.saveUserEmail(emailController.text.trim());
       await Helpers.saveUserName(snapshot.docs[0]["fullName"]);
-      Get.offAll(() => const HomeScreen());
+      Get.offAll(() => HomeScreen());
+      update();
+    } else {
+      Get.snackbar("Error", value.toString());
+      log(value.toString());
     }
+    isLoading.value = false;
+    update();
     _controllerClear();
   }
 
@@ -35,16 +44,19 @@ class LogInController extends GetxController {
     isLoading.value = true;
     if (formkeyRegister.currentState!.validate()) {
       final bool? value = await AuthService.registerUser(
-          nameController.text.trim(),
-          emailController.text.trim(),
-          passwordController.text.trim());
-      if (value == true) {
-        log(value.toString());
+          name: nameController.text.trim(),
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+      if (value == true && value != null) {
+        ////////////// Add to SF ////////////////
         await Helpers.saveUserLoggedInStatus(true);
         await Helpers.saveUserEmail(emailController.text.trim());
         await Helpers.saveUserName(nameController.text.trim());
         log('Success');
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => HomeScreen());
+      } else {
+        Get.snackbar("Error", value.toString());
+        log(value.toString());
       }
 
       _controllerClear();
@@ -54,7 +66,9 @@ class LogInController extends GetxController {
   }
 
   signOut() async {
-    await AuthService.signOutUser();
+    await AuthService.signOutUser().then((value) => value
+        ? Get.offAll(() => const LogInPage())
+        : Get.snackbar("Error", 'SignOut Failed'));
   }
 
   _controllerClear() {

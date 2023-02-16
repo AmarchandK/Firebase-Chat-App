@@ -9,34 +9,39 @@ class AuthService {
   static FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   static Future<bool?> registerUser(
-      String name, String email, String password) async {
+      {required String name,
+      required String email,
+      required String password}) async {
     try {
       User? user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user;
       if (user != null) {
-        await DataBaseService(uid: user.uid).updateuserData(name, email);
+        ///////// Call database for  adding name and email ////////////
+        await DataBaseService(uid: user.uid)
+            .saveUserData(fullName: name, email: email);
         return true;
       }
     } on FirebaseAuthException catch (e) {
-      log(e.message.toString());
+      log("error on Register --------------------------- $e ---------------------------");
       showSnack(e.message!, Colors.red);
       return false;
     }
     return null;
   }
 
-  static Future<bool?> logInUser(String email, String password) async {
+  static Future<bool?> logInUser(
+      {required String email, required String password}) async {
     try {
       User? user = (await firebaseAuth.signInWithEmailAndPassword(
               email: email, password: password))
           .user;
       if (user != null) {
+        
         return true;
       }
     } on FirebaseAuthException catch (e) {
       log(e.message.toString());
-      showSnack(e.message!, Colors.red);
       return false;
     }
     return null;

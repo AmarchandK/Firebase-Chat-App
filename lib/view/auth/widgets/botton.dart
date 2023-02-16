@@ -6,7 +6,7 @@ class OnTapButton extends StatelessWidget {
   const OnTapButton({
     Key? key,
     required this.buttonName,
-    this.onPressed,
+    this.onPressed
   }) : super(key: key);
 
   final String buttonName;
