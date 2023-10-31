@@ -11,12 +11,11 @@ class SplashController extends GetxController {
 
   RxBool isSignedIn = false.obs;
 
-  _getUserLogInStatus() async {
+  void _getUserLogInStatus() async {
     await Helpers.getUserStatus().then((value) {
       if (value != null && value == true) {
         isSignedIn.value = true;
       }
     });
-
   }
 }

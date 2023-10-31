@@ -30,31 +30,26 @@ class LogInPage extends GetView<LogInController> {
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
                   h10,
-                  const Text(
-                    'LogIn Now to see what we are talking',
-                  ),
+                  const Text('LogIn Now to see what we are talking'),
                   Image.asset('assets/login.png'),
                   FormFields(
-                    hint: 'Email',
-                    error: 'Enter an Email',
-                    controller: controller.emailController,
-                    icon: Icons.email_outlined,
-                    keybord: TextInputType.emailAddress,
-                  ),
+                      hint: 'Email',
+                      error: 'Enter an Email',
+                      controller: controller.emailController,
+                      icon: Icons.email_outlined,
+                      keybord: TextInputType.emailAddress),
                   FormFields(
-                    hint: 'Password',
-                    error: 'Enter a Password',
-                    controller: controller.passwordController,
-                    icon: Icons.lock,
-                    keybord: TextInputType.number,
-                  ),
+                      hint: 'Password',
+                      error: 'Enter a Password',
+                      controller: controller.passwordController,
+                      icon: Icons.lock,
+                      keybord: TextInputType.number),
                   h10,
                   Obx(() => controller.isLoading.value
                       ? const CupertinoActivityIndicator()
                       : OnTapButton(
                           buttonName: 'LogIn',
-                          onPressed: () => controller.onLogin(),
-                        )),
+                          onPressed: () => controller.onLogin())),
                   h10,
                   Text.rich(
                     TextSpan(

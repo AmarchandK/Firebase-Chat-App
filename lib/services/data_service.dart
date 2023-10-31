@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataBaseService {
@@ -41,16 +40,16 @@ class DataBaseService {
     try {
       DocumentReference groupDocumentReference = await groupCollection.add({
         "groupName": groupName,
-        "groupIcon": "",
+        "groupIcon": "  ",
         "admin": "${id}_$userName",
         "members": [],
-        "grpupId": "",
-        "resentMessage": "",
-        "resentMessageCentre": ""
+        "groupId": "",
+        "recentMessage": "",
+        "recentMessageSender": ""
       });
       await groupDocumentReference.update({
         "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-        "grpupId": groupDocumentReference.id
+        "groupId": groupDocumentReference.id
       });
       DocumentReference userDocumentReference = userCollection.doc(uid);
       return userDocumentReference.update({
@@ -60,5 +59,78 @@ class DataBaseService {
     } catch (e) {
       log("error on group creating =====$e");
     }
+  }
+
+  ///// getting the chat //////
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getChats(
+      String groupId) async {
+    return groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time")
+        .snapshots();
+  }
+
+  ////// getting admin ////////
+  Future<String> getAdmin(String groupId) async {
+    DocumentReference reference = groupCollection.doc(groupId);
+    DocumentSnapshot documentSnapshot = await reference.get();
+    return documentSnapshot["admin"];
+  }
+
+  ////// Get Group Members /////
+  Future<Stream<DocumentSnapshot<Object?>>> getGroupMembers(
+      String groupId) async {
+    return groupCollection.doc(groupId).snapshots();
+  }
+
+  //// Search ///////
+  Future<QuerySnapshot<Object?>> searchByName(String groupName) {
+    return groupCollection.where("groupName", isEqualTo: groupName).get();
+  }
+
+  Future<bool> checkUserInGroup(
+      String groupId, String groupName, String? userName) async {
+    DocumentReference userReference = userCollection.doc(uid);
+    DocumentSnapshot documentSnapshot = await userReference.get();
+    // DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    List groups = await documentSnapshot['groups'];
+    if (groups.contains("${groupId}_$groupName")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future toggleGroupJoin(
+      String groupId, String groupName, String userName) async {
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    DocumentSnapshot documentSnapshot = await userDocumentReference.get();
+    List result = await documentSnapshot['groups'];
+    if (result.contains("${groupId}_$groupName")) {
+      await userDocumentReference.update({
+        "groups": FieldValue.arrayRemove(["${groupId}_$groupName"])
+      });
+      await groupDocumentReference.update({
+        "members": FieldValue.arrayRemove(["${uid}_$userName"])
+      });
+    } else {
+      await userDocumentReference.update({
+        "groups": FieldValue.arrayUnion(["${groupId}_$groupName"])
+      });
+      groupDocumentReference.update({
+        "members": FieldValue.arrayUnion(["${uid}_$userName"])
+      });
+    }
+  }
+
+  void sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
+    groupCollection.doc(groupId).collection("messages").add(chatMessageData);
+    groupCollection.doc(groupId).update({
+      "recentMessage": chatMessageData['message'],
+      "recentMessageSender": chatMessageData['sender'],
+      "recentMessageTime": chatMessageData['time'].toString(),
+    });
   }
 }

@@ -17,7 +17,7 @@ class LogInController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   RxBool isLoading = false.obs;
 
-  onLogin() async {
+  void onLogin() async {
     isLoading.value = true;
     final bool? value = await AuthService.logInUser(
         email: emailController.text.trim(),
@@ -40,7 +40,7 @@ class LogInController extends GetxController {
     _controllerClear();
   }
 
-  onRegister() async {
+  void onRegister() async {
     isLoading.value = true;
     if (formkeyRegister.currentState!.validate()) {
       final bool? value = await AuthService.registerUser(
@@ -55,7 +55,8 @@ class LogInController extends GetxController {
         log('Success');
         Get.offAll(() => HomeScreen());
       } else {
-        Get.snackbar("Error", value.toString());
+        Get.snackbar("Error", value.toString(),
+            backgroundColor: primaryColor.withOpacity(0.5));
         log(value.toString());
       }
 
@@ -65,13 +66,13 @@ class LogInController extends GetxController {
     }
   }
 
-  signOut() async {
+  void signOut() async {
     await AuthService.signOutUser().then((value) => value
         ? Get.offAll(() => const LogInPage())
         : Get.snackbar("Error", 'SignOut Failed'));
   }
 
-  _controllerClear() {
+  void _controllerClear() {
     nameController.clear();
     emailController.clear();
     passwordController.clear();

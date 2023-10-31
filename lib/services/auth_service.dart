@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class AuthService {
   static FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+// Register User
   static Future<bool?> registerUser(
       {required String name,
       required String email,
@@ -23,13 +23,14 @@ class AuthService {
         return true;
       }
     } on FirebaseAuthException catch (e) {
-      log("error on Register --------------------------- $e ---------------------------");
+      log("error on Register --------------------------- ${e.message}. ---------------------------");
       showSnack(e.message!, Colors.red);
       return false;
     }
     return null;
   }
 
+  // login
   static Future<bool?> logInUser(
       {required String email, required String password}) async {
     try {
@@ -37,16 +38,17 @@ class AuthService {
               email: email, password: password))
           .user;
       if (user != null) {
-        
         return true;
       }
     } on FirebaseAuthException catch (e) {
-      log(e.message.toString());
+      log("error on Register --------------------------- ${e.message}. ---------------------------");
+
       return false;
     }
     return null;
   }
 
+// SIGN OUT
   static Future<bool> signOutUser() async {
     try {
       await Helpers.saveUserLoggedInStatus(false);

@@ -11,12 +11,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: Constant.apiKey,
-          appId: Constant.appId,
-          messagingSenderId: Constant.messagingSenderId,
-          projectId: Constant.projectId),
-    );
+        options: const FirebaseOptions(
+            apiKey: Constant.apiKey,
+            appId: Constant.appId,
+            messagingSenderId: Constant.messagingSenderId,
+            projectId: Constant.projectId));
   } else {
     await Firebase.initializeApp();
   }
@@ -28,13 +27,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      onInit: controllerInit(),
+      onInit: controllerInit,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: primaryColor,
-          appBarTheme: AppBarTheme(backgroundColor: primaryColor),
-          floatingActionButtonTheme:
-              FloatingActionButtonThemeData(backgroundColor: primaryColor)),
+          appBarTheme: const AppBarTheme(backgroundColor: primaryColor),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: primaryColor)),
       home: const SplashScreen(),
     );
   }

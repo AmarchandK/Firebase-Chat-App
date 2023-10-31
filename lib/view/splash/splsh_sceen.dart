@@ -10,8 +10,7 @@ class SplashScreen extends GetView<SplashController> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Obx(
-      () =>
-          controller.isSignedIn.value ?  HomeScreen() : const LogInPage(),
+      () => controller.isSignedIn.value ? HomeScreen() : const LogInPage(),
     ));
   }
 }

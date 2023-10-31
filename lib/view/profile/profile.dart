@@ -13,20 +13,23 @@ class ProfilePage extends StatelessWidget {
       ),
       body: SizedBox(
         width: double.infinity - 150,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.person_4, size: 150),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [const Text("Full Name"), Text(name)],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [const Text("Email"), Text(email)],
-              ),
-            ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.person_4, size: 150),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [const Text("Full Name"), Text(name)],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [const Text("Email"), Text(email)],
+                ),
+              ],
+            ),
           ),
         ),
       ),

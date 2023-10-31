@@ -3,8 +3,8 @@ import 'package:chat_firebase/controller/home_controller.dart';
 import 'package:chat_firebase/controller/splash_controller.dart';
 import 'package:get/get.dart';
 
-controllerInit() {
+void controllerInit() {
+  Get.put(SplashController());
   Get.put(HomeController());
   Get.put(LogInController());
-  Get.put(SplashController());
-}
+} 
